@@ -15,13 +15,18 @@ from groq import Groq
 # client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 import os
 from groq import Groq
+from django.http import JsonResponse
 
-api_key = os.environ.get("GROQ_API_KEY")
+def chat_view(request):
+    api_key = os.environ.get("GROQ_API_KEY")
 
-if not api_key:
-    raise Exception("GROQ_API_KEY is missing")
+    if not api_key:
+        return JsonResponse({"error": "API key not configured"}, status=500)
 
-client = Groq(api_key=api_key)
+    client = Groq(api_key=api_key)
+
+    # your AI logic here
+    return JsonResponse({"message": "API working"})
 
 
 # ---------------- FILE READ FUNCTIONS ---------------- #
