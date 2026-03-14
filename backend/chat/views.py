@@ -12,7 +12,16 @@ from groq import Groq
 
 
 # Initialize Groq client
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+import os
+from groq import Groq
+
+api_key = os.environ.get("GROQ_API_KEY")
+
+if not api_key:
+    raise Exception("GROQ_API_KEY is missing")
+
+client = Groq(api_key=api_key)
 
 
 # ---------------- FILE READ FUNCTIONS ---------------- #
