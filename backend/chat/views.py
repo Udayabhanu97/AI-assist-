@@ -99,6 +99,15 @@ def get_videos(query):
 
 @api_view(['POST'])
 def chat_view(request):
+
+    # ✅ ADDING GROQ CLIENT INITIALIZATION
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        return JsonResponse({"error": "GROQ_API_KEY missing"}, status=500)
+
+    client = Groq(api_key=api_key)
+    # -------------------------------------
+
     user_message = request.data.get("message", "")
     user_id = request.data.get("user_id")
     uploaded_file = request.FILES.get("file")
@@ -239,8 +248,6 @@ def register_user(request):
 
 # ---------------- LOGIN ---------------- #
 
-# ---------------- LOGIN ---------------- #
-
 @api_view(["POST"])
 def login_user(request):
     email = request.data.get("email")
@@ -252,7 +259,7 @@ def login_user(request):
     except User.DoesNotExist:
         return Response({"message": "Invalid credentials"}, status=400)
 
-    # Authenticate using username (Django uses username internally)
+    # Authenticate using username
     user = authenticate(username=user_obj.username, password=password)
 
     if user is None:
